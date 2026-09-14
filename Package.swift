@@ -1,0 +1,25 @@
+// swift-tools-version: 6.0
+
+import PackageDescription
+
+let package = Package(
+    name: "swift-media-metadata",
+    platforms: [
+        .macOS(.v14), .iOS(.v17), .tvOS(.v17), .visionOS(.v1)
+    ],
+    products: [
+        .library(name: "MediaMetadata", targets: ["MediaMetadata"]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/arraypress/swift-codec-kit.git", from: "0.1.0"),
+    ],
+    targets: [
+        .target(
+            name: "MediaMetadata",
+            dependencies: [
+                .product(name: "CodecKit", package: "swift-codec-kit"),
+            ]
+        ),
+        .testTarget(name: "MediaMetadataTests", dependencies: ["MediaMetadata"]),
+    ]
+)
