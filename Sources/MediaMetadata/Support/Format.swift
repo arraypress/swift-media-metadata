@@ -44,13 +44,23 @@ public enum Format {
         "\(width)x\(height)"
     }
 
-    /// The shorthand a person uses for a frame height.
+    /// The shorthand a person uses for a frame size.
+    ///
+    /// Measured on the SHORT edge, not the height. A phone clip at 1080x1920
+    /// is 1080p vertical to everyone who handles it; calling it 1440p because
+    /// it is 1920 tall describes a frame nobody shot. Measured on a real
+    /// portrait video, which is how this was found.
     ///
     /// Bands rather than exact matches, because real footage is rarely the
     /// round number the name suggests — a 1920x1038 letterboxed master is
-    /// still 1080p to everyone who handles it.
-    public static func resolutionLabel(height: Int) -> String {
-        switch height {
+    /// still 1080p, and a 1080x1350 social crop is too.
+    public static func resolutionLabel(width: Int, height: Int) -> String {
+        resolutionLabel(shortEdge: width > 0 ? min(width, height) : height)
+    }
+
+    /// The label for a known short edge.
+    public static func resolutionLabel(shortEdge: Int) -> String {
+        switch shortEdge {
         case 4320...: "8K"
         case 2160..<4320: "4K"
         case 1400..<2160: "1440p"

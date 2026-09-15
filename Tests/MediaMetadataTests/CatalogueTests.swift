@@ -265,11 +265,22 @@ final class CatalogueTests: XCTestCase {
 
     /// Real footage is rarely the round number the name suggests.
     func testResolutionLabelsAreBands() {
-        XCTAssertEqual(Format.resolutionLabel(height: 1080), "1080p")
-        XCTAssertEqual(Format.resolutionLabel(height: 1038), "1080p")
-        XCTAssertEqual(Format.resolutionLabel(height: 2160), "4K")
-        XCTAssertEqual(Format.resolutionLabel(height: 240), "SD")
-        XCTAssertEqual(Format.resolutionLabel(height: 0), "")
+        XCTAssertEqual(Format.resolutionLabel(shortEdge: 1080), "1080p")
+        XCTAssertEqual(Format.resolutionLabel(shortEdge: 1038), "1080p")
+        XCTAssertEqual(Format.resolutionLabel(shortEdge: 2160), "4K")
+        XCTAssertEqual(Format.resolutionLabel(shortEdge: 240), "SD")
+        XCTAssertEqual(Format.resolutionLabel(shortEdge: 0), "")
+    }
+
+    /// A phone clip at 1080x1920 is 1080p vertical to everyone who handles it.
+    /// Reading the height instead of the short edge calls it 1440p, which
+    /// describes a frame nobody shot — found on a real portrait video.
+    func testPortraitVideoIsLabelledByItsShortEdge() {
+        XCTAssertEqual(Format.resolutionLabel(width: 1080, height: 1920), "1080p")
+        XCTAssertEqual(Format.resolutionLabel(width: 1920, height: 1080), "1080p")
+        XCTAssertEqual(Format.resolutionLabel(width: 1080, height: 1350), "1080p")
+        XCTAssertEqual(Format.resolutionLabel(width: 3840, height: 2160), "4K")
+        XCTAssertEqual(Format.resolutionLabel(width: 2160, height: 3840), "4K", "vertical 4K is still 4K")
     }
 
     func testEXIFEnumerationsResolveToWords() {

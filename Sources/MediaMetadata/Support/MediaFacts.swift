@@ -184,7 +184,7 @@ public enum MediaFacts {
             put(.videoWidth, .integer(width))
             put(.videoHeight, .integer(height))
             put(.videoDimensions, .text(Format.dimensions(width, height)))
-            put(.resolution, .text(Format.resolutionLabel(height: height)))
+            put(.resolution, .text(Format.resolutionLabel(width: width, height: height)))
         }
         if let rate = try? await video.load(.nominalFrameRate), rate > 0 {
             put(.framerate, .decimal(Double((rate * 100).rounded() / 100)))
